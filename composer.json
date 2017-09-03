@@ -2,6 +2,9 @@
     "name": "machbarmacher/letsencrypta",
     "type": "project",
     "require": {
+        "webmozart/assert": "^1.2",
+        "symfony/process": "^3.3",
+        "symfony/console": "^3.3"
     },
     "authors": [
         {
