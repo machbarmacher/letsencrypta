@@ -13,6 +13,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
+            "machbarmacher\\linear_workflow\\": "linear_workflow_src/",
             "machbarmacher\\letsencrypta\\": "src/"
         }
     },
