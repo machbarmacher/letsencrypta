@@ -17,9 +17,6 @@ class State {
   /** @var string[] */
   private $additionalDomains;
 
-  /** @var \AcmePhp\Cli\Application */
-  private $acmePhpApplication;
-
   /**
    * State constructor.
    * @param \Symfony\Component\Console\Input\InputInterface $input
@@ -32,14 +29,6 @@ class State {
     $this->output = $output;
     $this->domain = $domain;
     $this->additionalDomains = $additionalDomains;
-    $this->acmePhpApplication = new AcmePhpApplication();
-  }
-
-  public function acmePhpRun($commandName, array $arguments) {
-    return $this->acmePhpApplication->find($commandName)->run(
-      new ArrayInput(array_merge($commandName, $arguments)),
-      $this->getOutput()
-    );
   }
 
   /**

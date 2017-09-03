@@ -2,12 +2,13 @@
 
 namespace machbarmacher\letsencrypta\Steps;
 
+use machbarmacher\letsencrypta\AcmePhpApi;
 use machbarmacher\linear_workflow\AbstractStep;
 
 class Request extends AbstractLetsencryptaStep {
   public function process() {
     // @todo Care for expired auth.
-    return $this->getState()->acmePhpRun('check', [
+    return AcmePhpApi::acmePhpRun('check', [
       'domain' => $this->getState()->getDomain(),
       '--force' => $this->getState()->getInput()->getOption('force'),
       '--alternative-name' => $this->getState()->getAdditionalDomains(),
@@ -18,6 +19,6 @@ class Request extends AbstractLetsencryptaStep {
       '--organization' => 'n/a',
       '--unit' => 'n/a',
       '--email' => 'n/a',
-    ]);
+    ], $this->getState()->getOutput());
   }
 }
