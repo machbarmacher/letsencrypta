@@ -1,0 +1,16 @@
+{
+    "name": "machbarmacher/letsencrypta",
+    "type": "project",
+    "require": {
+        "symfony/console": "^3.3"
+    },
+    "authors": [
+        {
+            "name": "Axel Rutz",
+            "email": "axel.rutz@machbarmacher.net"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+}
+
