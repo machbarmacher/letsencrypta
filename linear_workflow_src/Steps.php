@@ -7,9 +7,14 @@ class Steps {
   /** @var \machbarmacher\linear_workflow\StepInterface[] */
   protected $steps = [];
 
+  /**
+   * @param \machbarmacher\linear_workflow\StepInterface $step
+   * @return $this
+   */
   public function addStep(StepInterface $step) {
     $name = $step->getName();
     $this->steps[$name] = $step;
+    return $this;
   }
 
   public function process() {
@@ -29,6 +34,15 @@ class Steps {
         } catch (JumpTo $jumpTo) {
           $stepIndex = array_search($jumpTo->getDestination(), $stepNames);
           $recursionChecker->notifyJumpTo($stepName);
+        } catch (Skip $skip) {
+          do {
+            $stepIndex += 1;
+          } while (
+            isset($stepNames[$stepIndex]) &&
+            in_array($stepNames[$stepIndex], $skip->getStepNames())
+          );
+        } catch (Finish $finish) {
+          $stepIndex = FALSE;
         }
       }
       $stepIndex += 1;

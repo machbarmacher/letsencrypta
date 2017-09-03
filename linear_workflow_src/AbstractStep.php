@@ -4,7 +4,10 @@ namespace machbarmacher\linear_workflow;
 
 abstract class AbstractStep implements StepInterface {
 
-  abstract public function getName();
+  public function getName() {
+    $classWithNamespce = explode('\\', static::class);
+    return array_pop($classWithNamespce);
+  }
 
   public function isNeeded() {
     return TRUE;
