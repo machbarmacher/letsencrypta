@@ -9,7 +9,7 @@ class Register extends AbstractLetsencryptaStep {
     //if not done: register email
     $email = $this->getState()->getInput()->getOption('email') ?:
       'webmaster@' . $this->getState()->getDomain();
-    return AcmePhpApi::acmePhpRun('register', [
+    return AcmePhpApi::run('register', [
       'email' => $email,
       'agreement' => TRUE,
     ], $this->getState()->getOutput());
