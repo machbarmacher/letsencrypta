@@ -2,7 +2,6 @@
     "name": "machbarmacher/letsencrypta",
     "type": "project",
     "require": {
-        "symfony/console": "^3.3"
     },
     "authors": [
         {
@@ -12,5 +11,13 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "machbarmacher\\letsencrypta\\": "src/"
+        }
+    },
+    "bin": [
+        "bin/letsencrypta"
+    ]
 }
 
