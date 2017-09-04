@@ -16,6 +16,8 @@ class State {
   private $domain;
   /** @var string[] */
   private $additionalDomains;
+  /** @var string */
+  private $webroot;
 
   /**
    * State constructor.
@@ -23,12 +25,14 @@ class State {
    * @param \Symfony\Component\Console\Output\OutputInterface $output
    * @param string $domain
    * @param string[] $additionalDomains
+   * @param string $webroot
    */
-  public function __construct(InputInterface $input, OutputInterface $output, $domain, $additionalDomains) {
+  public function __construct(InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot) {
     $this->input = $input;
     $this->output = $output;
     $this->domain = $domain;
     $this->additionalDomains = $additionalDomains;
+    $this->webroot = $webroot;
   }
 
   /**
@@ -57,6 +61,14 @@ class State {
    */
   public function getAdditionalDomains() {
     return $this->additionalDomains;
+  }
+
+  public function getMail() {
+    return "webmaster@{$this->domain}";
+  }
+
+  public function getWebroot() {
+    return $this->webroot;
   }
 
 }

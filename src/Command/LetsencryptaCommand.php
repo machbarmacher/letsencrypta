@@ -34,7 +34,8 @@ class LetsencryptaCommand extends Command {
   }
 
   protected function execute(InputInterface $input, OutputInterface $output) {
-    $domains = $this->getDomains();
+    $domainWebroots = $this->getDomainWebroots();
+    $domains = array_keys($domainWebroots);
     $certificatesExisting = AcmePhpApi::getCertificates();
     $makeSeparateCerts = $input->getOption('separate') ?: $certificatesExisting->guessSeparate($domains);
 
@@ -54,7 +55,7 @@ class LetsencryptaCommand extends Command {
     }
 
     foreach ($certificatesTodo as $domain => $alternative) {
-      $state = new State($input, $output, $domain, $alternative);
+      $state = new State($input, $output, $domain, $alternative, $domainWebroots[$domain]);
       $steps = (new Steps())
         ->addStep(new Plan($state))
         ->addStep(new Register($state))
@@ -63,13 +64,14 @@ class LetsencryptaCommand extends Command {
         ->addStep(new Check($state))
         ->addStep(new Request($state))
         ->addStep(new InstallCertificate($state))
+        // @todo Clean up challenges.
       ;
       $steps->process();
     }
 
   }
 
-  private function getDomains() {
+  private function getDomainWebroots() {
     // @todo Make this pluggable.
     $process = new Process('drush sa --local-only --format=json');
     $process->run();
@@ -82,23 +84,16 @@ class LetsencryptaCommand extends Command {
       throw new \InvalidArgumentException(
         'json_decode error: ' . json_last_error_msg());
     }
-    $domains = [];
+    $domainWebroots = [];
     foreach ($aliases as $alias) {
       $uri = $alias['uri'];
+      $root = $alias['root'];
       $domain = parse_url($uri, PHP_URL_HOST);
       if (FALSE !== strpos($domain, '.')) {
-        $domains[$domain] = $domain;
+        $domainWebroots[$domain] = $root;
       }
     }
-    return $domains;
-  }
-
-  private function expiringSoon($domainCertificates) {
-    // @fixme Check AcmePhp certificates.
-  }
-
-  private function getUncertifiedDomains($domainRequirements, $domainCertificates) {
-    // @fixme Make a diff.
+    return $domainWebroots;
   }
 
 }
