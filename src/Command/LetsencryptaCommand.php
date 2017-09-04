@@ -5,7 +5,6 @@ namespace machbarmacher\letsencrypta;
 use machbarmacher\letsencrypta\Steps\Authorize;
 use machbarmacher\letsencrypta\Steps\Check;
 use machbarmacher\letsencrypta\Steps\InstallAuthorization;
-use machbarmacher\letsencrypta\Steps\Plan;
 use machbarmacher\letsencrypta\Steps\InstallCertificate;
 use machbarmacher\letsencrypta\Steps\Register;
 use machbarmacher\letsencrypta\Steps\Request;
@@ -29,6 +28,8 @@ class LetsencryptaCommand extends Command {
             'The mailaddress to register at letsencrypt. Defaults to webmaster@YOURDOMAIN.com'),
           new InputOption('separate', NULL, InputOption::VALUE_OPTIONAL,
             'Use 1 to force separate certificates for each domain.'),
+          new InputOption('reregister', NULL, InputOption::VALUE_OPTIONAL,
+            'Force re-registration.'),
         ))
       );
   }
@@ -57,8 +58,7 @@ class LetsencryptaCommand extends Command {
     foreach ($certificatesTodo as $domain => $alternative) {
       $state = new State($input, $output, $domain, $alternative, $domainWebroots[$domain]);
       $steps = (new Steps())
-        ->addStep(new Plan($state))
-        ->addStep(new Register($state))
+        ->addStep(new Register($state, $input->getOption('reregister')))
         ->addStep(new Authorize($state))
         ->addStep(new InstallAuthorization($state))
         ->addStep(new Check($state))
