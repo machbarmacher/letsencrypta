@@ -2,10 +2,23 @@
 
 namespace machbarmacher\linear_workflow;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 class Steps {
+
+  /** @var OutputInterface */
+  protected $output;
 
   /** @var \machbarmacher\linear_workflow\StepInterface[] */
   protected $steps = [];
+
+  /**
+   * Steps constructor.
+   * @param OutputInterface $output
+   */
+  public function __construct(OutputInterface $output) {
+    $this->output = $output;
+  }
 
   /**
    * @param \machbarmacher\linear_workflow\StepInterface $step
@@ -26,6 +39,7 @@ class Steps {
       $step = $this->steps[$stepName];
       $isNeeded = $step->isNeeded();
       if ($isNeeded) {
+        $this->output->writeln(sprintf('Running step: %s', $stepName));
         try {
           $success = $step->process();
           if (!$success) {
@@ -44,6 +58,9 @@ class Steps {
         } catch (Finish $finish) {
           $stepIndex = FALSE;
         }
+      }
+      else {
+        $this->output->writeln(sprintf('Skipping step: %s', $stepName));
       }
       $stepIndex += 1;
     }

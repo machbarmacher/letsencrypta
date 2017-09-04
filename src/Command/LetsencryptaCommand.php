@@ -57,7 +57,7 @@ class LetsencryptaCommand extends Command {
 
     foreach ($certificatesTodo as $domain => $alternative) {
       $state = new State($input, $output, $domain, $alternative, $domainWebroots[$domain]);
-      $steps = (new Steps())
+      $steps = (new Steps($output))
         ->addStep(new Register($state, $input->getOption('reregister')))
         ->addStep(new Authorize($state))
         ->addStep(new InstallAuthorization($state))
