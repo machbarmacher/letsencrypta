@@ -25,7 +25,8 @@ class Register extends AbstractLetsencryptaStep {
     return AcmePhpApi::run('register', [
       'email' => $email,
       'agreement' => TRUE,
-    ], $this->getState()->getOutput());
+    ], $this->getState()->getOutput()
+    , $this->getState()->isStaging());
   }
 
   public function isNeeded() {

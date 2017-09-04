@@ -14,6 +14,7 @@ class Check extends AbstractLetsencryptaStep {
     return AcmePhpApi::run('check', [
       'domain' => $this->getState()->getDomain(),
       '--solver' => 'http',
-    ], $this->getState()->getOutput());
+    ], $this->getState()->getOutput()
+    , $this->getState()->isStaging());
   }
 }

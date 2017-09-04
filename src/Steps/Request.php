@@ -19,6 +19,7 @@ class Request extends AbstractLetsencryptaStep {
       '--organization' => 'n/a',
       '--unit' => 'n/a',
       '--email' => 'n/a',
-    ], $this->getState()->getOutput());
+    ], $this->getState()->getOutput()
+    , $this->getState()->isStaging());
   }
 }

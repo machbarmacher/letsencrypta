@@ -18,6 +18,8 @@ class State {
   private $additionalDomains;
   /** @var string */
   private $webroot;
+  /** @var bool */
+  private $staging;
 
   /**
    * State constructor.
@@ -26,13 +28,15 @@ class State {
    * @param string $domain
    * @param string[] $additionalDomains
    * @param string $webroot
+   * @param bool $staging
    */
-  public function __construct(InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot) {
+  public function __construct(InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot, $staging) {
     $this->input = $input;
     $this->output = $output;
     $this->domain = $domain;
     $this->additionalDomains = $additionalDomains;
     $this->webroot = $webroot;
+    $this->staging = $staging;
   }
 
   /**
@@ -69,6 +73,13 @@ class State {
 
   public function getWebroot() {
     return $this->webroot;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isStaging() {
+    return $this->staging;
   }
 
 }

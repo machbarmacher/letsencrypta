@@ -30,6 +30,8 @@ class LetsencryptaCommand extends Command {
             'Use 1 to force separate certificates for each domain.'),
           new InputOption('reregister', NULL, InputOption::VALUE_OPTIONAL,
             'Force re-registration.'),
+          new InputOption('staging', NULL, InputOption::VALUE_OPTIONAL,
+            'Use letsencrypt staging server for testing.'),
         ))
       );
   }
@@ -56,7 +58,7 @@ class LetsencryptaCommand extends Command {
     }
 
     foreach ($certificatesTodo as $domain => $alternative) {
-      $state = new State($input, $output, $domain, $alternative, $domainWebroots[$domain]);
+      $state = new State($input, $output, $domain, $alternative, $domainWebroots[$domain], $input->getOption('staging'));
       $steps = (new Steps($output))
         ->addStep(new Register($state, $input->getOption('reregister')))
         ->addStep(new Authorize($state))
