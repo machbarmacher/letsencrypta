@@ -5,6 +5,7 @@ namespace machbarmacher\letsencrypta\Steps;
 use AcmePhp\Core\Exception\Server\UnauthorizedServerException;
 use machbarmacher\letsencrypta\AcmePhpApi;
 use machbarmacher\linear_workflow\JumpTo;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class Authorize
@@ -20,9 +21,9 @@ class Authorize extends AbstractLetsencryptaStep {
       ], $this->getState()->getOutput()
         , $this->getState()->isStaging());
     } catch (UnauthorizedServerException $e) {
-      $this->getState()->getOutput()->writeln('Authorize exception:');
-      $this->getState()->getCommand()->getApplication()
-        ->renderException($e, $this->getState()->getOutput());
+      $this->getState()->getOutput()->writeln(sprintf(
+        'Authorize exception: %s %s', get_class($e), $e->getMessage()),
+        OutputInterface::VERBOSITY_VERBOSE);
       throw new JumpTo('Register');
     }
     return $result;
