@@ -12,7 +12,7 @@ foreach ($autoloaderLocations as $file) {
   }
 }
 
-use machbarmacher\letsencrypta\LetsencryptaCommand;
+use machbarmacher\letsencrypta\Command\LetsencryptaCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();

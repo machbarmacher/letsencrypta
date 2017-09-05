@@ -1,7 +1,10 @@
 <?php
 
-namespace machbarmacher\letsencrypta;
+namespace machbarmacher\letsencrypta\Command;
 
+use machbarmacher\letsencrypta\AcmePhpApi;
+use machbarmacher\letsencrypta\Exception;
+use machbarmacher\letsencrypta\State;
 use machbarmacher\letsencrypta\Steps\Authorize;
 use machbarmacher\letsencrypta\Steps\Check;
 use machbarmacher\letsencrypta\Steps\InstallAuthorization;
