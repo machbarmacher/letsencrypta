@@ -54,8 +54,11 @@ class Steps {
             $stepIndex += 1;
             $stepName = isset($stepNames[$stepIndex]) ?
               $stepNames[$stepIndex] : NULL;
-            $this->output->writeln(sprintf('Skipping step: %s', $stepName));
-          } while (in_array($stepName, $skip->getStepNames(), TRUE));
+            $skipping = in_array($stepName, $skip->getStepNames(), TRUE);
+            if ($skipping) {
+              $this->output->writeln(sprintf('Skipping step: %s', $stepName));
+            }
+          } while ($skipping);
           continue;
         } catch (Finish $finish) {
           $stepIndex = FALSE;
