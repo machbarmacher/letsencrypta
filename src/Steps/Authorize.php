@@ -26,6 +26,5 @@ class Authorize extends AbstractLetsencryptaStep {
         OutputInterface::VERBOSITY_VERBOSE);
       throw new JumpTo('Register');
     }
-    return $result;
   }
 }

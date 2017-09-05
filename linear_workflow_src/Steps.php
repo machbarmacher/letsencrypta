@@ -41,10 +41,7 @@ class Steps {
       if ($isNeeded) {
         $this->output->writeln(sprintf('Running step: %s', $stepName));
         try {
-          $success = $step->process();
-          if (!$success) {
-            throw new \Exception(sprintf('Step %s did not succeed.', $stepName));
-          }
+          $step->process();
         } catch (JumpTo $jumpTo) {
           $destination = $jumpTo->getDestination();
           $this->output->writeln(sprintf('Jumping to step: %s', $destination));

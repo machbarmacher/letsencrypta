@@ -17,7 +17,6 @@ class InstallCertificate extends AbstractLetsencryptaStep {
         printf('Please install ssl certificate at %s and %s.',
           $this->getSftp('private'), $this->getSftp('certs')));
     $result = $mailer->send($message);
-    return $result;
   }
 
   public function getSftp($part) {

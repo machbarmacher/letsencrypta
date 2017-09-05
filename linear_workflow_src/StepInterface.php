@@ -15,8 +15,9 @@ interface StepInterface {
   public function isNeeded();
 
   /**
-   * @return bool $success
    * @throws \machbarmacher\linear_workflow\JumpTo
+   * @throws \machbarmacher\linear_workflow\Skip
+   * @throws \machbarmacher\linear_workflow\Finish
    */
   public function process();
 
