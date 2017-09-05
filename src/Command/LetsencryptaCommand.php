@@ -93,6 +93,10 @@ class LetsencryptaCommand extends Command {
     }
     $domainWebroots = [];
     foreach ($aliases as $alias) {
+      // drush sa --local-only seems not to filter reliably.
+      if (isset($alias['remote-host'])) {
+        continue;
+      }
       $uri = $alias['uri'];
       $root = $alias['root'];
       $domain = parse_url($uri, PHP_URL_HOST);
