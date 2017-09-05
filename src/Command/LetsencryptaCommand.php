@@ -73,7 +73,7 @@ class LetsencryptaCommand extends Command {
     foreach ($certificatesTodo as $domain => $alternative) {
       $output->writeln(sprintf('Certifying domain %s%s', $domain,
         $alternative ? sprintf(' + %s', implode(', ', $alternative)) : ''));
-      $state = new State($input, $output, $domain, $alternative, $domainWebroots[$domain], $input->getOption('staging'));
+      $state = new State($this, $input, $output, $domain, $alternative, $domainWebroots[$domain], $input->getOption('staging'));
       $steps = (new Steps($output))
         ->addStep(new Register($state, $input->getOption('reregister')))
         ->addStep(new Authorize($state))

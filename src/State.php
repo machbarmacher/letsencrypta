@@ -3,11 +3,14 @@
 namespace machbarmacher\letsencrypta;
 
 use AcmePhp\Cli\Application as AcmePhpApplication;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class State {
+  /** @var \Symfony\Component\Console\Command\Command */
+  private $command;
   /** @var \Symfony\Component\Console\Input\InputInterface */
   private $input;
   /** @var  \Symfony\Component\Console\Output\OutputInterface */
@@ -30,13 +33,21 @@ class State {
    * @param string $webroot
    * @param bool $staging
    */
-  public function __construct(InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot, $staging) {
+  public function __construct(Command $command, InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot, $staging) {
+    $this->command = $command;
     $this->input = $input;
     $this->output = $output;
     $this->domain = $domain;
     $this->additionalDomains = $additionalDomains;
     $this->webroot = $webroot;
     $this->staging = $staging;
+  }
+
+  /**
+   * @return \Symfony\Component\Console\Command\Command
+   */
+  public function getCommand() {
+    return $this->command;
   }
 
   /**
