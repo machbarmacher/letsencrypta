@@ -9,6 +9,7 @@ use machbarmacher\letsencrypta\Steps\Authorize;
 use machbarmacher\letsencrypta\Steps\Check;
 use machbarmacher\letsencrypta\Steps\InstallAuthorization;
 use machbarmacher\letsencrypta\Steps\InstallCertificate;
+use machbarmacher\letsencrypta\Steps\Plan;
 use machbarmacher\letsencrypta\Steps\Register;
 use machbarmacher\letsencrypta\Steps\Request;
 use machbarmacher\linear_workflow\Steps;
@@ -75,7 +76,8 @@ class LetsencryptaCommand extends Command {
         $alternative ? sprintf(' + %s', implode(', ', $alternative)) : ''));
       $state = new State($this, $input, $output, $domain, $alternative, $domainWebroots[$domain], $input->getOption('staging'));
       $steps = (new Steps($output))
-        ->addStep(new Register($state, $input->getOption('reregister')))
+        ->addStep(new Plan($state, $input->getOption('reregister')))
+        ->addStep(new Register($state))
         ->addStep(new Authorize($state))
         ->addStep(new InstallAuthorization($state))
         ->addStep(new Check($state))
