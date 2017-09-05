@@ -49,7 +49,9 @@ class Steps {
           $destination = $jumpTo->getDestination();
           $this->output->writeln(sprintf('Jumping to step: %s', $destination));
           $stepIndex = array_search($destination, $stepNames);
+          $stepName = $stepNames[$stepIndex];
           $recursionChecker->notifyJumpTo($stepName);
+          continue;
         } catch (Skip $skip) {
           do {
             $stepIndex += 1;
@@ -57,8 +59,10 @@ class Steps {
               $stepNames[$stepIndex] : NULL;
             $this->output->writeln(sprintf('Skipping step: %s', $stepName));
           } while (in_array($stepName, $skip->getStepNames(), TRUE));
+          continue;
         } catch (Finish $finish) {
           $stepIndex = FALSE;
+          continue;
         }
       }
       else {
