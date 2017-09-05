@@ -4,7 +4,7 @@
     "require": {
         "acmephp/acmephp": "^1.0@beta",
         "webmozart/assert": "^1.2",
-        "swiftmailer/swiftmailer": "^6.0",
+        "swiftmailer/swiftmailer": "^5.4",
         "symfony/process": "^3.3",
         "symfony/filesystem": "^3.3",
         "symfony/console": "^3.3"
