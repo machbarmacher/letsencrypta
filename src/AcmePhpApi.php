@@ -54,7 +54,7 @@ class AcmePhpApi {
    */
   public static function getContainer() {
     if (!self::$container) {
-      self::$container = (new AcmePhpFakeCommand())->getContainer();
+      self::$container = (new AcmePhpFakeCommand(self::getApplication()))->getContainer();
     }
     return self::$container;
   }
