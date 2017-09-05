@@ -3,7 +3,7 @@
 // application.php
 
 $autoloaderLocations = [
-  __DIR__ . '../vendor/autoload.php',
+  __DIR__ . '../autoload.php',
   __DIR__ . '../../../vendor/autoload.php',
 ];
 foreach ($autoloaderLocations as $file) {
