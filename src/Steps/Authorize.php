@@ -20,6 +20,9 @@ class Authorize extends AbstractLetsencryptaStep {
       ], $this->getState()->getOutput()
         , $this->getState()->isStaging());
     } catch (UnauthorizedServerException $e) {
+      $this->getState()->getOutput()->writeln('Authorize exception:');
+      $this->getState()->getCommand()->getApplication()
+        ->renderException($e, $this->getState()->getOutput());
       throw new JumpTo('Register');
     }
     return $result;
