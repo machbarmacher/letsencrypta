@@ -2,6 +2,7 @@
     "name": "machbarmacher/letsencrypta",
     "type": "project",
     "require": {
+        "acmephp/acmephp": "^1.0@beta",
         "webmozart/assert": "^1.2",
         "swiftmailer/swiftmailer": "^6.0",
         "symfony/process": "^3.3",
