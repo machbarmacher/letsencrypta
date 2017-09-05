@@ -46,21 +46,23 @@ class Steps {
             throw new \Exception(sprintf('Step %s did not succeed.', $stepName));
           }
         } catch (JumpTo $jumpTo) {
-          $stepIndex = array_search($jumpTo->getDestination(), $stepNames);
+          $destination = $jumpTo->getDestination();
+          $this->output->writeln(sprintf('Jumping to step: %s', $destination));
+          $stepIndex = array_search($destination, $stepNames);
           $recursionChecker->notifyJumpTo($stepName);
         } catch (Skip $skip) {
           do {
             $stepIndex += 1;
-          } while (
-            isset($stepNames[$stepIndex]) &&
-            in_array($stepNames[$stepIndex], $skip->getStepNames())
-          );
+            $stepName = isset($stepNames[$stepIndex]) ?
+              $stepNames[$stepIndex] : NULL;
+            $this->output->writeln(sprintf('Skipping step: %s', $stepName));
+          } while (in_array($stepName, $skip->getStepNames(), TRUE));
         } catch (Finish $finish) {
           $stepIndex = FALSE;
         }
       }
       else {
-        $this->output->writeln(sprintf('Skipping step: %s', $stepName));
+        $this->output->writeln(sprintf('Skipping unnecessary step: %s', $stepName));
       }
       $stepIndex += 1;
     }
