@@ -41,6 +41,10 @@ class LetsencryptaCommand extends Command {
 
   protected function execute(InputInterface $input, OutputInterface $output) {
     $domainWebroots = $this->getDomainWebroots();
+    if (!$domainWebroots) {
+      $output->writeln('No domains found.');
+      return;
+    }
     $domains = array_keys($domainWebroots);
     $certificatesExisting = AcmePhpApi::getCertificates();
     $makeSeparateCerts = $input->getOption('separate') ?: $certificatesExisting->guessSeparate($domains);
@@ -53,8 +57,14 @@ class LetsencryptaCommand extends Command {
     }
     else {
       /** @var \machbarmacher\letsencrypta\Certificate $certificateMatching */
-      $certificateMatching = array_values($certificatesExisting->getMultiMatches($domains))[0];
-      $domain = $certificateMatching->getDomain();
+      $certificatesMatching = array_values($certificatesExisting->getMultiMatches($domains));
+      if ($certificatesMatching) {
+        $certificateMatching = $certificatesMatching[0];
+        $domain = $certificateMatching->getDomain();
+      }
+      else {
+        $domain = $domains[0];
+      }
       $certificatesTodo = [
         $domain => array_diff($domains, [$domain]),
       ];
@@ -89,7 +99,7 @@ class LetsencryptaCommand extends Command {
     $aliases = \json_decode($output, TRUE);
     if (JSON_ERROR_NONE !== json_last_error()) {
       throw new \InvalidArgumentException(
-        'json_decode error: ' . json_last_error_msg());
+        sprintf("Jsondecode error: %s\n%s\nEOD", json_last_error_msg(), $output));
     }
     $domainWebroots = [];
     foreach ($aliases as $alias) {
