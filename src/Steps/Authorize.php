@@ -19,7 +19,7 @@ class Authorize extends AbstractLetsencryptaStep {
         'domain' => $this->getState()->getDomain(),
         '--solver' => 'http',
       ], $this->getState()->getOutput()
-        , $this->getState()->isStaging());
+        , $this->getState()->isTest());
     } catch (UnauthorizedServerException $e) {
       $this->getState()->getOutput()->writeln(sprintf(
         'Authorize exception: %s %s', get_class($e), $e->getMessage()),

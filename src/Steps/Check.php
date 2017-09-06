@@ -14,6 +14,6 @@ class Check extends AbstractLetsencryptaStep {
       'domain' => $this->getState()->getDomain(),
       '--solver' => 'http',
     ], $this->getState()->getOutput()
-    , $this->getState()->isStaging());
+    , $this->getState()->isTest());
   }
 }

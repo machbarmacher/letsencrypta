@@ -36,7 +36,7 @@ class LetsencryptaCommand extends Command {
             'The certificate domain.'),
           new InputOption('additional', NULL, InputOption::VALUE_OPTIONAL,
             'Additional domains.'),
-          new InputOption('staging', NULL, InputOption::VALUE_OPTIONAL,
+          new InputOption('test', NULL, InputOption::VALUE_OPTIONAL,
             'Use letsencrypt staging server for testing.'),
           new InputOption('force', 'f', InputOption::VALUE_NONE,
             'Whether to force renewal or not (by default, renewal will be done only if the certificate expire in less than 2 weeks)'),
@@ -69,7 +69,7 @@ class LetsencryptaCommand extends Command {
       $output->writeln("Nothing to do for $domain expiring on $date.", OutputInterface::VERBOSITY_VERBOSE);
     }
 
-    $state = new State($this, $input, $output, $domain, $alternative, $webroot, $input->getOption('staging'));
+    $state = new State($this, $input, $output, $domain, $alternative, $webroot, $input->getOption('test'), $input->getOption('email'));
     $steps = (new Steps($output))
       ->addStep(new Plan($state))
       ->addStep(new Register($state))

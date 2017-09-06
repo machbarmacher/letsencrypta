@@ -20,6 +20,6 @@ class Request extends AbstractLetsencryptaStep {
       '--unit' => 'quoo',
       '--email' => 'none@example.com',
     ], $this->getState()->getOutput()
-    , $this->getState()->isStaging());
+    , $this->getState()->isTest());
   }
 }

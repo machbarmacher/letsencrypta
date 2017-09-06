@@ -15,7 +15,7 @@ class InstallCertificate extends AbstractLetsencryptaStep {
       ->setBody(
         sprintf('Please install ssl certificate at %s and %s.',
           $this->getSftp('private'), $this->getSftp('certs')));
-    if (!$this->getState()->getInput()->getOption('staging')) {
+    if (!$this->getState()->isTest()) {
       $message->setTo('support@freistil.it', 'Freistil Support');
     }
     $result = $mailer->send($message);

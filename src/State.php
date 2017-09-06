@@ -22,7 +22,9 @@ class State {
   /** @var string */
   private $webroot;
   /** @var bool */
-  private $staging;
+  private $test;
+  /** @var string */
+  private $email;
 
   /**
    * State constructor.
@@ -31,16 +33,17 @@ class State {
    * @param string $domain
    * @param string[] $additionalDomains
    * @param string $webroot
-   * @param bool $staging
+   * @param bool $test
    */
-  public function __construct(Command $command, InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot, $staging) {
+  public function __construct(Command $command, InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot, $test, $email) {
     $this->command = $command;
     $this->input = $input;
     $this->output = $output;
     $this->domain = $domain;
     $this->additionalDomains = $additionalDomains;
     $this->webroot = $webroot;
-    $this->staging = $staging;
+    $this->test = $test;
+    $this->email = $email;
   }
 
   /**
@@ -85,8 +88,16 @@ class State {
   /**
    * @return bool
    */
-  public function isStaging() {
-    return $this->staging;
+  public function isTest() {
+    return $this->test;
   }
+
+  /**
+   * @return string
+   */
+  public function getEmail() {
+    return $this->email;
+  }
+
 
 }
