@@ -36,7 +36,7 @@ class LetsencryptaCommand extends Command {
             'Alternative domains.'),
           new InputOption('email', NULL, InputOption::VALUE_OPTIONAL,
             'The mailaddress to register at letsencrypt. Defaults to webmaster@YOURDOMAIN.com'),
-          new InputOption('test', NULL, InputOption::VALUE_OPTIONAL,
+          new InputOption('test', NULL, InputOption::VALUE_NONE,
             'Use letsencrypt staging server for testing. Also omit cert mail recepint.'),
           new InputOption('force', 'f', InputOption::VALUE_NONE,
             'Whether to force renewal or not (by default, renewal will be done only if the certificate expire in less than 2 weeks)'),
