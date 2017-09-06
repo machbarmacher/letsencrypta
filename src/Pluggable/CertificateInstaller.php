@@ -11,7 +11,7 @@ class CertificateInstaller {
     $transport = new \Swift_SendmailTransport();
     $mailer = new \Swift_Mailer($transport);
     $message = (new \Swift_Message('Please install SSL certificate'))
-      ->setFrom($this->getFromMail())
+      ->setFrom($email)
       ->setCC($email)
       ->setBody(
         sprintf('Please install ssl certificate at %s and %s.',
@@ -28,10 +28,6 @@ class CertificateInstaller {
     $dir = realpath($dir);
     $result = "sftp://$userAtHost$dir/$part/$domain";
     return $result;
-  }
-
-  protected function getFromMail() {
-    return [$this->getUserAtHost() => 'MachbarMacher Letsencrypt Bot'];
   }
 
   /**

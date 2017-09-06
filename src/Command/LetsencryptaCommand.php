@@ -67,6 +67,7 @@ class LetsencryptaCommand extends Command {
     else {
       $date = date('Y-m-d', $certificate->getExpiration());
       $output->writeln("Nothing to do for $domain expiring on $date.", OutputInterface::VERBOSITY_VERBOSE);
+      return;
     }
 
     $email = $input->getOption('email') ?: $this->getWebmasterMail($domain);
