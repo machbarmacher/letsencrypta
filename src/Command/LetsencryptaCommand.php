@@ -36,6 +36,8 @@ class LetsencryptaCommand extends Command {
             'Force re-registration.'),
           new InputOption('staging', NULL, InputOption::VALUE_OPTIONAL,
             'Use letsencrypt staging server for testing.'),
+          new InputOption('force', 'f', InputOption::VALUE_NONE,
+            'Whether to force renewal or not (by default, renewal will be done only if the certificate expire in less than 2 weeks)'),
         ))
       );
   }
@@ -47,28 +49,66 @@ class LetsencryptaCommand extends Command {
       return;
     }
     $domains = array_keys($domainWebroots);
-    $certificatesExisting = AcmePhpApi::getCertificates();
-    $makeSeparateCerts = $input->getOption('separate') ?: $certificatesExisting->guessSeparate($domains);
+    $certificatesExistingContainer = AcmePhpApi::getCertificatesContainer();
+    $makeSeparateCerts = $input->getOption('separate') ?: $certificatesExistingContainer->guessSeparate($domains);
 
+    $certificatesTodo = [];
     if ($makeSeparateCerts) {
-      $certificatesTodo = [];
       foreach ($domains as $domain) {
-        $certificatesTodo[$domain] = [];
+        $certificate = $certificatesExistingContainer->get($domain);
+        if (
+          !$certificate
+          || $certificate->isExpiring()
+          || $input->getOption('force')
+        ) {
+          $certificatesTodo[$domain] = [];
+          if (!$certificate) {
+            $output->writeln("Create new certificate for $domain.");
+          }
+          elseif ($certificate->isExpiring()) {
+            $output->writeln("Create expiring certificate for $domain.");
+          }
+          else {
+            $output->writeln("Force create certificate for $domain.");
+          }
+        }
       }
     }
     else {
-      /** @var \machbarmacher\letsencrypta\Certificate $certificateMatching */
-      $certificatesMatching = array_values($certificatesExisting->getMultiMatches($domains));
+      /** @var \machbarmacher\letsencrypta\Certificate $certificate */
+      $certificatesMatching = array_values($certificatesExistingContainer->getMultiMatches($domains));
       if ($certificatesMatching) {
-        $certificateMatching = $certificatesMatching[0];
-        $domain = $certificateMatching->getDomain();
+        // Assume only one. This breaks in weird situations.
+        $certificate = $certificatesMatching[0];
+        $domain = $certificate->getDomain();
+        $additionalDomains = array_diff($domains, [$domain]);
+        $additional = $additionalDomains ? ' including ' . implode(',', $additionalDomains) : '';
+        if (
+          $certificate->isExpiring()
+          || $input->getOption('force')
+        ) {
+          if ($certificate->isExpiring()) {
+            $output->writeln("Create expiring certificate for $domain$additional.");
+          }
+          else {
+            $output->writeln("Force create certificate for $domain$additional.");
+          }
+        }
+        else {
+          $date = date('Y-m-d', $certificate->getExpiration());
+          $output->writeln("Skip creating certificate for $domain$additional, expiring on $date.");
+          unset($domain);
+        }
       }
       else {
         $domain = $domains[0];
+        $additionalDomains = array_diff($domains, [$domain]);
+        $additional = $additionalDomains ? ' including ' . implode(',', $additionalDomains) : '';
+        $output->writeln("Create new certificate for $domain$additional.");
       }
-      $certificatesTodo = [
-        $domain => array_diff($domains, [$domain]),
-      ];
+      if (isset($domain)) {
+        $certificatesTodo[$domain] = $additionalDomains;
+      }
     }
 
     foreach ($certificatesTodo as $domain => $alternative) {
