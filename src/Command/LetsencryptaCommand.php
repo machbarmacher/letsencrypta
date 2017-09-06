@@ -89,7 +89,7 @@ class LetsencryptaCommand extends Command {
 
   protected function getWebmasterMail($domain) {
     // Strip subdomains.
-    $extract = new LayerShifter\TLDExtract\Extract();
+    $extract = new \LayerShifter\TLDExtract\Extract();
     $registrableDomain = $extract->parse($domain)->getRegistrableDomain();
     $mail = "webmaster@$registrableDomain";
     return $mail;
