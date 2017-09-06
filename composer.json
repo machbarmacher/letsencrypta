@@ -2,6 +2,7 @@
     "name": "machbarmacher/letsencrypta",
     "type": "project",
     "require": {
+        "layershifter/tld-extract": "^1.2",
         "acmephp/acmephp": "^1.0@beta",
         "webmozart/assert": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",

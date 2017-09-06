@@ -78,10 +78,6 @@ class State {
     return $this->additionalDomains;
   }
 
-  public function getMail() {
-    return "webmaster@{$this->domain}";
-  }
-
   public function getWebroot() {
     return $this->webroot;
   }
