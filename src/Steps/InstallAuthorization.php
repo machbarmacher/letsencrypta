@@ -19,7 +19,17 @@ class InstallAuthorization extends AbstractLetsencryptaStep {
     $fileContent = $extractor->getCheckContent($authorizationChallenge);
     $basename = basename($url);
     $webroot = $this->getState()->getWebroot();
-    $fileName = "$webroot/.well-known/acme-challenge/$basename";
+
+    // Symlink without target dir? Create it!
+    $dir = "$webroot/.well-known/acme-challenge";
+    if (
+      is_link($dir)
+      && ($linkTarget = $fs->readlink($dir, TRUE))
+      && !file_exists($linkTarget)
+    ) {
+      $fs->mkdir($linkTarget);
+    }
+    $fileName = $dir . "/$basename";
     $fs->dumpFile($fileName, $fileContent);
   }
 }
