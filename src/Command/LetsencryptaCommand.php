@@ -15,6 +15,7 @@ use machbarmacher\letsencrypta\Steps\RemoveAuthorization;
 use machbarmacher\letsencrypta\Steps\Request;
 use machbarmacher\linear_workflow\Steps;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,14 +30,14 @@ class LetsencryptaCommand extends Command {
       ->setDescription('Do the whole letsencrypt magick.')
       ->setDefinition(
         new InputDefinition(array(
+          new InputArgument('webroot', NULL, InputArgument::REQUIRED,
+            'The site webroot.'),
+          new InputArgument('domain', NULL, InputArgument::REQUIRED,
+            'The certificate domain.'),
+          new InputArgument('alternative', NULL, InputArgument::IS_ARRAY,
+            'Alternative domains.'),
           new InputOption('email', NULL, InputOption::VALUE_OPTIONAL,
             'The mailaddress to register at letsencrypt. Defaults to webmaster@YOURDOMAIN.com'),
-          new InputOption('webroot', NULL, InputOption::VALUE_REQUIRED,
-            'The site webroot.'),
-          new InputOption('domain', NULL, InputOption::VALUE_REQUIRED,
-            'The certificate domain.'),
-          new InputOption('alternative', NULL, InputOption::VALUE_OPTIONAL,
-            'Alternative domains.'),
           new InputOption('test', NULL, InputOption::VALUE_OPTIONAL,
             'Use letsencrypt staging server for testing. Also omit cert mail recepint.'),
           new InputOption('force', 'f', InputOption::VALUE_NONE,
