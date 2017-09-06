@@ -32,7 +32,7 @@ class LetsencryptaCommand extends Command {
             'The site webroot.'),
           new InputArgument('domain', InputArgument::REQUIRED,
             'The certificate domain.'),
-          new InputArgument('alternative', NULL, InputArgument::IS_ARRAY,
+          new InputArgument('alternative', InputArgument::IS_ARRAY,
             'Alternative domains.'),
           new InputOption('email', NULL, InputOption::VALUE_OPTIONAL,
             'The mailaddress to register at letsencrypt. Defaults to webmaster@YOURDOMAIN.com'),
