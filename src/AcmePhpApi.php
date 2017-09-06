@@ -90,7 +90,7 @@ class AcmePhpApi {
     return $obj;
   }
 
-  public static function getCertificatesContainer() {
+  public static function getCertificates() {
     // @see \AcmePhp\Cli\Command\StatusCommand
     $repository = AcmePhpApi::getRepository();
     $master = AcmePhpApi::getStorage();
