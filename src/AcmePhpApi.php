@@ -36,12 +36,12 @@ class AcmePhpApi {
    * @param string $commandName
    * @param array $arguments
    * @param \Symfony\Component\Console\Output\OutputInterface $output
-   * @param bool $staging
+   * @param bool $isTest
    * @return int
    */
-  public static function run($commandName, array $arguments, $output, $staging) {
+  public static function run($commandName, array $arguments, $output, $isTest) {
     $arguments = array_merge([$commandName], $arguments);
-    if ($staging) {
+    if ($isTest) {
       $arguments['--server'] = 'https://acme-staging.api.letsencrypt.org/directory';
     }
     return self::getApplication()->find($commandName)->run(
