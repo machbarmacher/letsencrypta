@@ -24,7 +24,7 @@ class Authorize extends AbstractLetsencryptaStep {
   private function authorize($domain) {
     try {
       AcmePhpApi::run('authorize', [
-        'domain' => $this->getState()->getDomain(),
+        'domain' => $domain,
         '--solver' => 'http',
       ], $this->getState()->getOutput()
         , $this->getState()->isTest());
