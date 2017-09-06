@@ -11,7 +11,7 @@ class InstallCertificate extends AbstractLetsencryptaStep {
     $mailer = new \Swift_Mailer($transport);
     $message = (new \Swift_Message('Please install SSL certificate'))
       ->setFrom($this->getFromMail())
-      ->setCC($this->getWebmasterMail())
+      ->setCC($this->getState()->getEmail())
       ->setBody(
         sprintf('Please install ssl certificate at %s and %s.',
           $this->getSftp('private'), $this->getSftp('certs')));
@@ -28,15 +28,6 @@ class InstallCertificate extends AbstractLetsencryptaStep {
     $domain = $this->getState()->getDomain();
     $result = "sftp://$userAtHost$dir/$part/$domain";
     return $result;
-  }
-
-  protected function getWebmasterMail() {
-    $domain = $this->getState()->getDomain();
-    // Strip subdomains.
-    $extract = new LayerShifter\TLDExtract\Extract();
-    $registrableDomain = $extract->parse($domain)->getRegistrableDomain();
-    $mail = ["webmaster@$registrableDomain" => "$registrableDomain Webmaster"];
-    return $mail;
   }
 
   protected function getFromMail() {

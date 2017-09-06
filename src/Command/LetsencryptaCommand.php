@@ -37,7 +37,7 @@ class LetsencryptaCommand extends Command {
           new InputOption('alternative', NULL, InputOption::VALUE_OPTIONAL,
             'Alternative domains.'),
           new InputOption('test', NULL, InputOption::VALUE_OPTIONAL,
-            'Use letsencrypt staging server for testing.'),
+            'Use letsencrypt staging server for testing. Also omit cert mail recepint.'),
           new InputOption('force', 'f', InputOption::VALUE_NONE,
             'Whether to force renewal or not (by default, renewal will be done only if the certificate expire in less than 2 weeks)'),
         ))
@@ -69,7 +69,8 @@ class LetsencryptaCommand extends Command {
       $output->writeln("Nothing to do for $domain expiring on $date.", OutputInterface::VERBOSITY_VERBOSE);
     }
 
-    $state = new State($this, $input, $output, $domain, $alternative, $webroot, $input->getOption('test'), $input->getOption('email'));
+    $email = $input->getOption('email') ?: $this->getWebmasterMail($domain);
+    $state = new State($this, $input, $output, $domain, $alternative, $webroot, $input->getOption('test'), $email);
     $steps = (new Steps($output))
       ->addStep(new Plan($state))
       ->addStep(new Register($state))
@@ -82,6 +83,14 @@ class LetsencryptaCommand extends Command {
     ;
     $steps->process();
 
+  }
+
+  protected function getWebmasterMail($domain) {
+    // Strip subdomains.
+    $extract = new LayerShifter\TLDExtract\Extract();
+    $registrableDomain = $extract->parse($domain)->getRegistrableDomain();
+    $mail = "webmaster@$registrableDomain";
+    return $mail;
   }
 
   protected function symdiff(array $a, array $b) {
