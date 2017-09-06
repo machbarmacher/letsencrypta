@@ -14,7 +14,7 @@ class InstallCertificate extends AbstractLetsencryptaStep {
       //->setTo('support@freistil.it')
       ->setTo('axel.rutz@gmail.com')
       ->setBody(
-        printf('Please install ssl certificate at %s and %s.',
+        sprintf('Please install ssl certificate at %s and %s.',
           $this->getSftp('private'), $this->getSftp('certs')));
     $result = $mailer->send($message);
   }
@@ -25,7 +25,7 @@ class InstallCertificate extends AbstractLetsencryptaStep {
     $dir = AcmePhpApi::getContainer()->getParameter('app.storage_directory');
     $dir = realpath($dir);
     $domain = $this->getState()->getDomain();
-    $result = "sftp://$user@$host/$dir/$part/$domain";
+    $result = "sftp://$user@$host$dir/$part/$domain";
     return $result;
   }
 
