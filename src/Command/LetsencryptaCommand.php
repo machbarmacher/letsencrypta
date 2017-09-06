@@ -47,9 +47,9 @@ class LetsencryptaCommand extends Command {
   }
 
   protected function execute(InputInterface $input, OutputInterface $output) {
-    $webroot = $input->getOption('webroot');
-    $domain = $input->getOption('domain');
-    $alternative = (array)$input->getOption('alternative');
+    $webroot = $input->getArgument('webroot');
+    $domain = $input->getArgument('domain');
+    $alternative = (array)$input->getArgument('alternative');
     $alternative = array_diff($alternative, [$domain]);
     $plusAlternative = $alternative ? sprintf(' + %s', implode(', ', $alternative)) : '';
 
