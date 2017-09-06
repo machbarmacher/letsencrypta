@@ -11,6 +11,7 @@ use machbarmacher\letsencrypta\Steps\InstallAuthorization;
 use machbarmacher\letsencrypta\Steps\InstallCertificate;
 use machbarmacher\letsencrypta\Steps\Plan;
 use machbarmacher\letsencrypta\Steps\Register;
+use machbarmacher\letsencrypta\Steps\RemoveAuthorization;
 use machbarmacher\letsencrypta\Steps\Request;
 use machbarmacher\linear_workflow\Steps;
 use Symfony\Component\Console\Command\Command;
@@ -77,9 +78,9 @@ class LetsencryptaCommand extends Command {
       ->addStep(new Authorize($state))
       ->addStep(new InstallAuthorization($state))
       ->addStep(new Check($state))
+      ->addStep(new RemoveAuthorization($state))
       ->addStep(new Request($state))
       ->addStep(new InstallCertificate($state))
-      // @todo Clean up challenges.
     ;
     $steps->process();
 

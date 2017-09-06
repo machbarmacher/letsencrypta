@@ -4,9 +4,9 @@ namespace machbarmacher\letsencrypta\Steps;
 
 use machbarmacher\letsencrypta\Pluggable\AuthorizationInstaller;
 
-class InstallAuthorization extends AbstractLetsencryptaStep {
+class RemoveAuthorization extends AbstractLetsencryptaStep {
   public function process() {
-    (new AuthorizationInstaller())->install(
+    (new AuthorizationInstaller())->remove(
       $this->getState()->getDomain(),
       $this->getState()->getWebroot());
   }
