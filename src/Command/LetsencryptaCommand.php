@@ -3,7 +3,6 @@
 namespace machbarmacher\letsencrypta\Command;
 
 use machbarmacher\letsencrypta\AcmePhpApi;
-use machbarmacher\letsencrypta\Exception;
 use machbarmacher\letsencrypta\State;
 use machbarmacher\letsencrypta\Steps\Authorize;
 use machbarmacher\letsencrypta\Steps\Check;
@@ -20,7 +19,6 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 class LetsencryptaCommand extends Command {
 
@@ -30,9 +28,9 @@ class LetsencryptaCommand extends Command {
       ->setDescription('Do the whole letsencrypt magick.')
       ->setDefinition(
         new InputDefinition(array(
-          new InputArgument('webroot', NULL, InputArgument::REQUIRED,
+          new InputArgument('webroot', InputArgument::REQUIRED,
             'The site webroot.'),
-          new InputArgument('domain', NULL, InputArgument::REQUIRED,
+          new InputArgument('domain', InputArgument::REQUIRED,
             'The certificate domain.'),
           new InputArgument('alternative', NULL, InputArgument::IS_ARRAY,
             'Alternative domains.'),
