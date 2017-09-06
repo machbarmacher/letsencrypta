@@ -21,7 +21,7 @@ class Plan extends AbstractLetsencryptaStep {
     }
     // Skip registration if we have an acount key pair.
     // This might break if keys are generated but not registered.
-    // @todo Patch AcmePhp to create a registration artefact.
+    // @todo Patch AcmePhp save mail as registration artefact.
     $repository = AcmePhpApi::getRepository();
     $done = $repository->hasAccountKeyPair();
     if ($done) {

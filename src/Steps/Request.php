@@ -7,7 +7,6 @@ use machbarmacher\linear_workflow\AbstractStep;
 
 class Request extends AbstractLetsencryptaStep {
   public function process() {
-    // @todo Care for expired auth.
     AcmePhpApi::run('request', [
       'domain' => $this->getState()->getDomain(),
       '--force' => 'FORCE',
