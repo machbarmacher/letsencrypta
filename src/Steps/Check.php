@@ -10,9 +10,10 @@ class Check extends AbstractLetsencryptaStep {
    * @see \AcmePhp\Cli\Command\CheckCommand
    */
   public function process() {
-    $this->check($this->getState()->getDomain());
-    foreach ($this->getState()->getAdditionalDomains() as $additionalDomain) {
-      $this->check($additionalDomain);
+    $domains = array_merge([$this->getState()->getDomain()],
+      $this->getState()->getAdditionalDomains());
+    foreach ($domains as $domain) {
+      $this->check($domain);
     }
   }
 

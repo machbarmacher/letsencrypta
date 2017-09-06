@@ -14,8 +14,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Authorize extends AbstractLetsencryptaStep {
   public function process() {
+    $domains = array_merge([$this->getState()->getDomain()],
+      $this->getState()->getAdditionalDomains());
+    foreach ($domains as $domain) {
+      $this->authorize($domain);
+    }
+  }
+
+  private function authorize($domain) {
     try {
-      $result = AcmePhpApi::run('authorize', [
+      AcmePhpApi::run('authorize', [
         'domain' => $this->getState()->getDomain(),
         '--solver' => 'http',
       ], $this->getState()->getOutput()
