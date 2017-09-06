@@ -32,8 +32,6 @@ class LetsencryptaCommand extends Command {
             'The mailaddress to register at letsencrypt. Defaults to webmaster@YOURDOMAIN.com'),
           new InputOption('separate', NULL, InputOption::VALUE_OPTIONAL,
             'Use 1 to force separate certificates for each domain.'),
-          new InputOption('reregister', NULL, InputOption::VALUE_OPTIONAL,
-            'Force re-registration.'),
           new InputOption('staging', NULL, InputOption::VALUE_OPTIONAL,
             'Use letsencrypt staging server for testing.'),
           new InputOption('force', 'f', InputOption::VALUE_NONE,
@@ -116,7 +114,7 @@ class LetsencryptaCommand extends Command {
         $alternative ? sprintf(' + %s', implode(', ', $alternative)) : ''));
       $state = new State($this, $input, $output, $domain, $alternative, $domainWebroots[$domain], $input->getOption('staging'));
       $steps = (new Steps($output))
-        ->addStep(new Plan($state, $input->getOption('reregister')))
+        ->addStep(new Plan($state))
         ->addStep(new Register($state))
         ->addStep(new Authorize($state))
         ->addStep(new InstallAuthorization($state))

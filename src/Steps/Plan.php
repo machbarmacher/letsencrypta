@@ -10,7 +10,7 @@ class Plan extends AbstractLetsencryptaStep {
   /** @var bool */
   private $forceRegister;
 
-  public function __construct(State $state, $forceRegister) {
+  public function __construct(State $state, $forceRegister = FALSE) {
     parent::__construct($state);
     $this->forceRegister = $forceRegister;
   }
