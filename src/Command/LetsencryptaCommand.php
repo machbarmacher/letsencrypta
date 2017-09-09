@@ -74,6 +74,7 @@ class LetsencryptaCommand extends Command {
     }
 
     $email = $input->getOption('email') ?: $this->getWebmasterMail($domain);
+    // @todo Package out the linear workflow engine.
     $state = new State($this, $input, $output, $domain, $alternative, $webroot, $input->getOption('test'), $email);
     $steps = (new Steps($output))
       ->addStep(new Plan($state))

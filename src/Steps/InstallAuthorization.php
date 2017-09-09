@@ -14,6 +14,7 @@ class InstallAuthorization extends AbstractLetsencryptaStep {
   }
 
   private function install($domain) {
+    // @todo Make this a symfony listener.
     (new AuthorizationInstaller())->install(
       $domain, $this->getState()->getWebroot());
   }
