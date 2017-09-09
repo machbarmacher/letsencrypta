@@ -47,6 +47,7 @@ class LetsencryptaCommand extends Command {
   }
 
   protected function execute(InputInterface $input, OutputInterface $output) {
+    // @todo replace $output->writeln with symfony styling.
     $webroot = $input->getArgument('webroot');
     $domain = $input->getArgument('domain');
     $alternative = (array)$input->getArgument('alternative');
