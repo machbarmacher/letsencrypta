@@ -28,12 +28,12 @@ class LetsencryptaCommand extends Command {
       ->setDescription('Do the whole letsencrypt magick.')
       ->setDefinition(
         new InputDefinition(array(
-          new InputArgument('webroot', InputArgument::REQUIRED,
-            'The site webroot.'),
           new InputArgument('domain', InputArgument::REQUIRED,
             'The certificate domain.'),
           new InputArgument('alternative', InputArgument::IS_ARRAY,
             'Alternative domains.'),
+          new InputOption('webroot', NULL, InputOption::VALUE_REQUIRED,
+            'The webroot to install the authorization on.'),
           new InputOption('email', NULL, InputOption::VALUE_OPTIONAL,
             'The mailaddress to register at letsencrypt and use as from address. Defaults to webmaster@YOURDOMAIN.com'),
           new InputOption('mail-install-to', NULL, InputOption::VALUE_OPTIONAL,
@@ -48,11 +48,11 @@ class LetsencryptaCommand extends Command {
 
   protected function execute(InputInterface $input, OutputInterface $output) {
     // @todo replace $output->writeln with symfony styling.
-    $webroot = $input->getArgument('webroot');
     $domain = $input->getArgument('domain');
     $alternative = (array)$input->getArgument('alternative');
     $alternative = array_diff($alternative, [$domain]);
     $plusAlternative = $alternative ? sprintf(' + %s', implode(', ', $alternative)) : '';
+    $webroot = $input->getOption('webroot');
 
     $certificate = AcmePhpApi::getCertificates()->get($domain);
     if (!$certificate) {
