@@ -50,22 +50,6 @@ class AuthorizationInstaller {
     return array($fileContent, $basename);
   }
 
-  /**
-   * Resolves links in paths.
-   *
-   * With $canonicalize = false (default)
-   *      - if $path does not exist or is not a link, returns null
-   *      - if $path is a link, returns the next direct target of the link without considering the existence of the target
-   *
-   * With $canonicalize = true
-   *      - if $path does not exist, returns null
-   *      - if $path exists, returns its absolute fully resolved final version
-   *
-   * @param string $path         A filesystem path
-   * @param bool   $canonicalize Whether or not to return a canonicalized path
-   *
-   * @return string|null
-   */
   public function readlink($path, $canonicalize = false)
   {
     $fs = new Filesystem();
@@ -84,10 +68,34 @@ class AuthorizationInstaller {
       if (!$fs->isAbsolutePath($path)) {
         $path = $dir . DIRECTORY_SEPARATOR . $path;
       }
-      return realpath($path);
+      $path = $this->canonicalize($path);
+      return $path;
     }
 
     return readlink($path);
+  }
+
+  /**
+   * Canonicalize a path.
+   *
+   * Remove . and .. without using realpath(), as that does
+   * not work on nonexisting targets.
+   *
+   * @param $path
+   * @return string
+   */
+  public function canonicalize($path) {
+    $parts = explode(DIRECTORY_SEPARATOR, $path);
+    $result = [];
+    foreach ($parts as $part) {
+      if ('..' === $part && $result) {
+        array_pop($result);
+      }
+      elseif ('.' !== $part) {
+        $result[] = $part;
+      }
+    }
+    return implode(DIRECTORY_SEPARATOR, $result);
   }
 
 }
