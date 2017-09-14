@@ -36,7 +36,7 @@ class LetsencryptaCommand extends Command {
             'The webroot to install the authorization on.'),
           new InputOption('email', NULL, InputOption::VALUE_OPTIONAL,
             'The mailaddress to register at letsencrypt and use as from address. Defaults to webmaster@YOURDOMAIN.com'),
-          new InputOption('mail-install-to', NULL, InputOption::VALUE_OPTIONAL,
+          new InputOption('cert-notification-mailto', NULL, InputOption::VALUE_OPTIONAL,
             'The mailaddress to mail the certificate install instructions to.'),
           new InputOption('test', NULL, InputOption::VALUE_NONE,
             'Use letsencrypt staging server for testing. Also omit cert mail recepint.'),

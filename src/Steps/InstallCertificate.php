@@ -8,7 +8,7 @@ class InstallCertificate extends AbstractLetsencryptaStep {
   public function process() {
     // @todo Emit symfony event.
 
-    $mailTo = $this->getState()->getInput()->getOption('mailInstallTo');
+    $mailTo = $this->getState()->getInput()->getOption('cert-notification-mailto');
     if ($mailTo) {
       $webmasterMail = $this->getState()->getEmail();
 
