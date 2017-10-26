@@ -50,29 +50,21 @@ class AuthorizationInstaller {
     return array($fileContent, $basename);
   }
 
-  public function readlink($path, $canonicalize = false)
+  protected function readlink($path, $canonicalize = FALSE)
   {
-    $fs = new Filesystem();
-    if (!$canonicalize && !is_link($path)) {
-      return;
+    if (is_link($path)) {
+      return NULL;
     }
 
-    if ($canonicalize) {
-      if (!$fs->exists($path)) {
-        return;
-      }
+    $result = readlink($path);
 
+    if ($canonicalize && !$this->pathIsAbsolute($result)) {
       $dir = dirname($path);
-      $path = readlink($path);
-
-      if (!$fs->isAbsolutePath($path)) {
-        $path = $dir . DIRECTORY_SEPARATOR . $path;
-      }
-      $path = $this->canonicalize($path);
-      return $path;
+      $result = "$dir/$result";
+      $result = $this->canonicalize($result);
     }
 
-    return readlink($path);
+    return $result;
   }
 
   /**
@@ -96,6 +88,14 @@ class AuthorizationInstaller {
       }
     }
     return implode(DIRECTORY_SEPARATOR, $result);
+  }
+
+  /**
+   * @param $path
+   * @return int
+   */
+  protected function pathIsAbsolute($path) {
+    return strspn($path, '/', 0, 1);
   }
 
 }
