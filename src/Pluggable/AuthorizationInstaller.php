@@ -52,7 +52,7 @@ class AuthorizationInstaller {
 
   protected function readlink($path, $canonicalize = FALSE)
   {
-    if (is_link($path)) {
+    if (!is_link($path)) {
       return NULL;
     }
 
