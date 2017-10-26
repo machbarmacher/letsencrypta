@@ -54,6 +54,8 @@ class LetsencryptaCommand extends Command {
     $plusAlternative = $alternative ? sprintf(' + %s', implode(', ', $alternative)) : '';
     $webroot = $input->getOption('webroot');
 
+    AcmePhpApi::initContainer($input, $output);
+
     $certificate = AcmePhpApi::getCertificates()->get($domain);
     if (!$certificate) {
       $output->writeln("Create new certificate for $domain$plusAlternative.");

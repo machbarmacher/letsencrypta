@@ -7,6 +7,8 @@ use AcmePhp\Cli\Repository\RepositoryInterface;
 use AcmePhp\Ssl\Parser\CertificateParser;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class AcmePhpApi
@@ -49,12 +51,16 @@ class AcmePhpApi {
     );
   }
 
+  public static function initContainer(InputInterface $input, OutputInterface $output) {
+    self::$container = (new AcmePhpFakeCommand(self::getApplication(), $input, $output))->getContainer();
+  }
+
   /**
    * @return \Symfony\Component\DependencyInjection\ContainerBuilder
    */
   public static function getContainer() {
     if (!self::$container) {
-      self::$container = (new AcmePhpFakeCommand(self::getApplication()))->getContainer();
+      throw new \Exception('Call intiContainer() first.');
     }
     return self::$container;
   }
