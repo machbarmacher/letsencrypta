@@ -117,7 +117,7 @@ class LetsencryptaCommand extends Command {
     $message = new \Swift_Message('');
     try {
       $message->setTo($email);
-    } catch (Swift_RfcComplianceException) {
+    } catch (Swift_RfcComplianceException $e) {
       throw new \UnexpectedValueException(sprintf('Invalid email address: %s = %s', $name, $email));
     }
   }
