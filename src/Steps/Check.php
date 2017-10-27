@@ -24,6 +24,8 @@ class Check extends AbstractLetsencryptaStep {
     AcmePhpApi::run('check', [
       'domain' => $domain,
       '--solver' => 'http',
+      // Guzzle hickups on first test without cert otherwise.
+      '--no-test' => TRUE,
     ], $this->getState()->getOutput()
     , $this->getState()->isTest());
   }
