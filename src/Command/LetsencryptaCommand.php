@@ -13,6 +13,7 @@ use machbarmacher\letsencrypta\Steps\Register;
 use machbarmacher\letsencrypta\Steps\RemoveAuthorization;
 use machbarmacher\letsencrypta\Steps\Request;
 use machbarmacher\linear_workflow\Steps;
+use Swift_RfcComplianceException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -78,6 +79,9 @@ class LetsencryptaCommand extends Command {
     $email = $input->getOption('email') ?: $this->getWebmasterMail($domain);
     $test = $input->getOption('test');
     $certMailto = $input->getOption('cert-mailto');
+    $this->validateEmail($email, '--email');
+    $this->validateEmail($certMailto, '--cert-mailto');
+
     $state = new State($this, $input, $output, $domain, $alternative, $webroot, $test, $email, $certMailto);
     // @todo Package out the linear workflow engine.
     $steps = (new Steps($output))
@@ -107,6 +111,15 @@ class LetsencryptaCommand extends Command {
       array_diff($a, $b),
       array_diff($b, $a)
     ));
+  }
+
+  private function validateEmail($email, $name) {
+    $message = new \Swift_Message('');
+    try {
+      $message->setTo($email);
+    } catch (Swift_RfcComplianceException) {
+      throw new \UnexpectedValueException(sprintf('Invalid email address: %s = %s', $name, $email));
+    }
   }
 
 }
