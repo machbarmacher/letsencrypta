@@ -76,8 +76,9 @@ class LetsencryptaCommand extends Command {
     }
 
     $email = $input->getOption('email') ?: $this->getWebmasterMail($domain);
-    // @todo Put all config in here so others need not query input options.
-    $state = new State($this, $input, $output, $domain, $alternative, $webroot, $input->getOption('test'), $email);
+    $test = $input->getOption('test');
+    $certMailto = $input->getOption('cert-mailto');
+    $state = new State($this, $input, $output, $domain, $alternative, $webroot, $test, $email, $certMailto);
     // @todo Package out the linear workflow engine.
     $steps = (new Steps($output))
       ->addStep(new Plan($state))

@@ -25,17 +25,22 @@ class State {
   private $test;
   /** @var string */
   private $email;
+  /** @var string */
+  private $certMailto;
 
   /**
    * State constructor.
+   * @param \Symfony\Component\Console\Command\Command $command
    * @param \Symfony\Component\Console\Input\InputInterface $input
    * @param \Symfony\Component\Console\Output\OutputInterface $output
    * @param string $domain
    * @param string[] $additionalDomains
    * @param string $webroot
    * @param bool $test
+   * @param string $email
+   * @param string $certMailto
    */
-  public function __construct(Command $command, InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot, $test, $email) {
+  public function __construct(Command $command, InputInterface $input, OutputInterface $output, $domain, $additionalDomains, $webroot, $test, $email, $certMailto) {
     $this->command = $command;
     $this->input = $input;
     $this->output = $output;
@@ -44,6 +49,7 @@ class State {
     $this->webroot = $webroot;
     $this->test = $test;
     $this->email = $email;
+    $this->certMailto = $certMailto;
   }
 
   /**
@@ -97,6 +103,13 @@ class State {
    */
   public function getEmail() {
     return $this->email;
+  }
+
+  /**
+   * @return string
+   */
+  public function getCertMailto() {
+    return $this->certMailto;
   }
 
 
