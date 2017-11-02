@@ -27,11 +27,12 @@ class InstallCertificate extends AbstractLetsencryptaStep {
 This is your friendly MachbarMacher certbot running on:
 User: %s
 Host: %s
-Please install the %s ssl certificate at:
+Please install the %s ssl certificate:
+Private key:
 %s
-with private key:
+Certificate:
 %s
-OR - both in one:
+Trust chain:
 %s
 
 Thank you!
@@ -40,9 +41,9 @@ EOD
             $this->getUser(),
             $this->getHost(),
             $isTest ? 'invalid test' : 'valid live',
-            "$dir/certs/$domain/fullchain.pem",
             "$dir/private/$domain/private.pem",
-            "$dir/certs/$domain/combined.pem"
+            "$dir/certs/$domain/cert.pem",
+            "$dir/certs/$domain/chain.pem"
           ));
       $mailer->send($message, $failedRecipients);
       if ($failedRecipients) {
