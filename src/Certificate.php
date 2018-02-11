@@ -44,7 +44,8 @@ class Certificate {
   }
 
   public function isExpiring() {
-    return $this->expiration - time() < 14 * 24 * 3600;
+    // LE sends its first mail on T-20d.
+    return $this->expiration - time() < 22 * 24 * 3600;
   }
 
 }
