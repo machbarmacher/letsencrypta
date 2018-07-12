@@ -18,7 +18,7 @@ class InstallCertificate extends AbstractLetsencryptaStep {
       $transport = new \Swift_SendmailTransport();
       $mailer = new \Swift_Mailer($transport);
       $dir = $this->getDir();
-      $message = (new \Swift_Message('Please install SSL certificate'))
+      $message = (new \Swift_Message('Please install SSL certificate (for maybe multiple SANs!)'))
         ->setTo($mailTo)
         ->setFrom($webmasterMail)
         ->setCC($webmasterMail)
@@ -34,6 +34,8 @@ Certificate:
 %s
 Trust chain:
 %s
+
+Note: This may apply to multiple SANs.
 
 Thank you!
 EOD
