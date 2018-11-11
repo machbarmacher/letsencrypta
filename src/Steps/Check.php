@@ -12,17 +12,15 @@ class Check extends AbstractLetsencryptaStep {
   public function process() {
     $domains = array_merge([$this->getState()->getDomain()],
       $this->getState()->getAdditionalDomains());
-    foreach ($domains as $domain) {
-      $this->check($domain);
-    }
+    $this->check($domains);
   }
 
   /**
-   * @param $domain
+   * @param $domains
    */
-  protected function check($domain) {
+  protected function check($domains) {
     AcmePhpApi::run('check', [
-      'domain' => $domain,
+      'domains' => $domains,
       '--solver' => 'http',
       // Guzzle hickups on first test without cert otherwise.
       '--no-test' => TRUE,
