@@ -16,15 +16,13 @@ class Authorize extends AbstractLetsencryptaStep {
   public function process() {
     $domains = array_merge([$this->getState()->getDomain()],
       $this->getState()->getAdditionalDomains());
-    foreach ($domains as $domain) {
-      $this->authorize($domain);
-    }
+    $this->authorize($domains);
   }
 
-  private function authorize($domain) {
+  private function authorize($domains) {
     try {
       AcmePhpApi::run('authorize', [
-        'domain' => $domain,
+        'domains' => $domains,
         '--solver' => 'http',
       ], $this->getState()->getOutput()
         , $this->getState()->isTest());
