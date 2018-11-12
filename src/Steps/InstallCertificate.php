@@ -43,9 +43,9 @@ EOD
             $this->getUser(),
             $this->getHost(),
             $isTest ? 'invalid test' : 'valid live',
-            "$dir/private/$domain/private.pem",
-            "$dir/certs/$domain/cert.pem",
-            "$dir/certs/$domain/chain.pem"
+            "$dir/certs/$domain/private/key.private.pem",
+            "$dir/certs/$domain/public/cert.pem",
+            "$dir/certs/$domain/public/chain.pem"
           ));
       $mailer->send($message, $failedRecipients);
       if ($failedRecipients) {
